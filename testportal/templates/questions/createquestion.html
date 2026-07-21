@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #14161f;
+            --bg-vignette: #1b1e2a;
+            --paper: #f6f1e4;
+            --paper-edge: #eae3d0;
+            --stamp: #a63d2e;
+            --stamp-dark: #7c2c21;
+            --line: #cdbfa0;
+            --ink: #232016;
+            --muted-ink: #6b6152;
+            --focus: #3a6ea5;
+        }
+
+        * { box-sizing: border-box; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 20px;
+            background:
+                radial-gradient(circle at 50% -10%, var(--bg-vignette), var(--bg) 60%);
+            font-family: "IBM Plex Sans", sans-serif;
+            color: var(--ink);
+        }
+
+        .ticket {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            background: var(--paper);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.45), 0 2px 0 var(--paper-edge) inset;
+            border-radius: 4px;
+            padding: 44px 40px 40px 48px;
+            overflow: hidden;
+        }
+
+        /* perforated stub edge */
+        .ticket::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            background-image: radial-gradient(circle, var(--bg) 3.5px, transparent 3.6px);
+            background-size: 20px 20px;
+            background-position: -6px -4px;
+            border-right: 1.5px dashed var(--line);
+        }
+
+        .eyebrow {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--stamp-dark);
+            margin: 0 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            background: var(--stamp);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        h1 {
+            font-family: "Fraunces", serif;
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 1.1;
+            margin: 0 0 6px;
+            color: var(--ink);
+        }
+
+        .subhead {
+            margin: 0 0 26px;
+            font-size: 13.5px;
+            color: var(--muted-ink);
+        }
+
+        .rule {
+            border: none;
+            border-top: 1.5px dashed var(--line);
+            margin: 0 0 28px;
+        }
+
+        form p {
+            margin: 0 0 22px;
+        }
+
+        form p label {
+            display: block;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted-ink);
+            margin-bottom: 8px;
+        }
+
+        form p input[type="text"],
+        form p input[type="number"],
+        form p input[type="email"],
+        form p input[type="datetime-local"],
+        form p textarea,
+        form p select {
+            width: 100%;
+            padding: 10px 2px;
+            font-family: "IBM Plex Sans", sans-serif;
+            font-size: 15.5px;
+            color: var(--ink);
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid var(--line);
+            outline: none;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        form p textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        form p input:focus,
+        form p textarea:focus,
+        form p select:focus {
+            border-bottom-color: var(--focus);
+            box-shadow: 0 1px 0 0 var(--focus);
+        }
+
+        form p input:hover,
+        form p textarea:hover {
+            border-bottom-color: var(--muted-ink);
+        }
+
+        .helptext {
+            display: block;
+            font-size: 12px;
+            color: var(--muted-ink);
+            margin-top: 6px;
+        }
+
+        ul.errorlist {
+            list-style: none;
+            margin: 6px 0 0;
+            padding: 0;
+            color: var(--stamp);
+            font-size: 12.5px;
+            font-weight: 500;
+        }
+
+        .submit-row {
+            margin-top: 34px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        button[type="submit"] {
+            position: relative;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--paper);
+            background: var(--stamp);
+            border: 2px solid var(--stamp-dark);
+            border-radius: 3px;
+            padding: 13px 26px;
+            cursor: pointer;
+            transform: rotate(-1.5deg);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+            box-shadow: 0 4px 0 var(--stamp-dark);
+        }
+
+        button[type="submit"]:hover {
+            background: var(--stamp-dark);
+        }
+
+        button[type="submit"]:active {
+            transform: rotate(-1.5deg) translateY(4px);
+            box-shadow: 0 0 0 var(--stamp-dark);
+        }
+
+        button[type="submit"]:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .ticket { padding: 40px 26px 32px 38px; }
+            h1 { font-size: 27px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <p class="eyebrow">Poll &nbsp;·&nbsp; New Entry</p>
+        <h1>Create Question</h1>
+        <p class="subhead">Fill in the details below to add a new question to the ballot.</p>
+        <hr class="rule">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="submit-row">
+                <button type="submit">Cast Entry</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
