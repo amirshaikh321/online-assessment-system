@@ -11,3 +11,20 @@ class Question(models.Model):
 
     class Meta:
         db_table = 'question'
+
+class student(models.Model):
+    name = models.CharField(max_length=100)
+    rollno = models.IntegerField()
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'student'
+
+class Admin(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=250)
+
+    class Meta:
+        db_table = 'admin'
