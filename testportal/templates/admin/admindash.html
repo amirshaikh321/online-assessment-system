@@ -1,14 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin dashboard
-    </title>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Dashboard | Online Exam Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#54647a",
+                      "surface-container": "#eceef0",
+                      "on-error-container": "#93000a",
+                      "on-surface": "#191c1e",
+                      "primary": "#00288e",
+                      "on-primary-container": "#a8b8ff",
+                      "on-surface-variant": "#444653",
+                      "surface-bright": "#f7f9fb",
+                      "secondary": "#505f76",
+                      "on-tertiary-fixed-variant": "#004395",
+                      "inverse-primary": "#b8c4ff",
+                      "surface": "#f7f9fb",
+                      "primary-container": "#1e40af",
+                      "inverse-on-surface": "#eff1f3",
+                      "background": "#f7f9fb",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d8e2ff",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "tertiary-fixed-dim": "#adc6ff",
+                      "outline": "#757684",
+                      "on-primary-fixed-variant": "#173bab",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#e6e8ea",
+                      "outline-variant": "#c4c5d5",
+                      "on-error": "#ffffff",
+                      "on-background": "#191c1e",
+                      "inverse-surface": "#2d3133",
+                      "tertiary-container": "#00489e",
+                      "surface-dim": "#d8dadc",
+                      "tertiary": "#003272",
+                      "secondary-fixed": "#d3e4fe",
+                      "surface-tint": "#3755c3",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#f2f4f6",
+                      "primary-fixed-dim": "#b8c4ff",
+                      "on-tertiary-container": "#9cbbff",
+                      "primary-fixed": "#dde1ff",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#e0e3e5",
+                      "on-tertiary-fixed": "#001a42",
+                      "secondary-container": "#d0e1fb",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed": "#001453",
+                      "on-secondary-fixed": "#0b1c30"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max-width": "1440px",
+                      "sidebar-width": "260px",
+                      "stack-gap": "1rem",
+                      "gutter": "1.5rem",
+                      "margin-mobile": "1rem",
+                      "margin-desktop": "2rem"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "display-lg-mobile": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "title-sm": ["Inter"],
+                      "display-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "display-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "title-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
 </head>
-<body>
-    <h1>
-        Admin Dashboard
-    </h1>
-</body>
-</html>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 overflow-y-auto w-[260px] bg-surface-container-low border-r border-outline-variant shadow-sm z-40 transition-all duration-300 ease-in-out">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Admin Portal</h1>
+<p class="text-xs text-on-surface-variant/70 uppercase tracking-widest mt-1">Institutional Control</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container border-l-4 border-primary rounded-r-lg font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined fill-icon">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span>Questions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Create Question</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span>View Questions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">edit</span>
+<span>Update Question</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">delete</span>
+<span>Delete Question</span>
+</a>
+</nav>
+<div class="px-6 py-6 border-t border-outline-variant">
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm shadow-md hover:bg-primary-container transition-all">
+                Create New Exam
+            </button>
+</div>
+<div class="p-4 border-t border-outline-variant mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-error">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-full lg:w-[calc(100%-260px)] z-30 bg-surface-bright/80 backdrop-blur-md shadow-sm h-16 px-gutter flex justify-between items-center transition-all duration-200">
+<div class="flex items-center gap-6">
+<div class="lg:hidden">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+</div>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant/30 focus-within:ring-2 ring-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-64 outline-none" placeholder="Search exams or students..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Overview</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Reports</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-title-sm text-title-sm hover:shadow-lg transition-all">
+                Quick Action
+            </button>
+<div class="flex items-center gap-2">
+<div class="hover:bg-surface-container rounded-full p-2 cursor-pointer transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface-bright"></span>
+</div>
+<div class="flex items-center gap-3 pl-2 ml-2 border-l border-outline-variant/30">
+<div class="text-right hidden sm:block">
+<p class="text-on-surface font-semibold text-xs leading-none">Admin User</p>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-tighter">Super Admin</p>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-primary-container object-cover cursor-pointer" data-alt="A professional portrait of an academic administrator in a clean office setting. The person is wearing a subtle professional attire, looking toward the camera with a confident yet welcoming expression. Soft overhead lighting creates a bright and professional atmosphere aligned with the blue and white corporate theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByjsLNSq3BBztmm_oVA_i8LMX5ouzvESb1HBbkk0XPhMbSTfuksbriwVUCDfECmcra3jG0fEgIguDKxyyssOf5SdGewu6DNvQrH7CCK5jFCCA0pedGza-7Fg5cn8ADfH4wy3H0pMA2CknL7iVhBd3kv-JnwlxyvIwrl91JoU_7MX1k1EugXGWo_lKHQHvoDRmR5lpNsJi7sDQYBV89ojpn8jMrFcdtbOuugDQNrNsJisbPHbnDF1e-NMx2-pd2woSHi40LC5DlLaA"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 pb-12 lg:ml-[260px] min-h-screen px-gutter max-w-[1440px]">
+<!-- Welcome Banner Section -->
+<section class="relative overflow-hidden rounded-xl mb-8 bg-primary-container text-on-primary h-48 flex items-center px-10 shadow-lg">
+
+<div class="relative z-10 space-y-2">
+<h2 class="font-display-lg text-display-lg font-extrabold tracking-tight">Welcome back, Admin!</h2>
+<p class="text-on-primary-container/80 font-body-md text-body-md max-w-md">The examination portal is running smoothly. There are 4 active exams being monitored in real-time across institutional campuses.</p>
+</div>
+<div class="absolute right-10 top-1/2 -translate-y-1/2 hidden md:block">
+<div class="flex gap-4">
+<div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 text-center">
+<p class="text-3xl font-bold">98%</p>
+<p class="text-[10px] uppercase font-bold tracking-widest">Uptime</p>
+</div>
+<div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 text-center">
+<p class="text-3xl font-bold">12.4k</p>
+<p class="text-[10px] uppercase font-bold tracking-widest">Requests</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<!-- Stat Card: Total Students -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-primary/10 rounded-lg group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white">group</span>
+</div>
+<span class="text-success text-[12px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12%
+                    </span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Total Students</h3>
+<p class="text-2xl font-bold text-on-surface">14,230</p>
+<div class="mt-4 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary w-3/4 h-full"></div>
+</div>
+</div>
+<!-- Stat Card: Total Exams -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-secondary-container/50 rounded-lg group-hover:bg-secondary transition-colors">
+<span class="material-symbols-outlined text-secondary group-hover:text-white">assignment</span>
+</div>
+<span class="text-success text-[12px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 5%
+                    </span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Total Exams</h3>
+<p class="text-2xl font-bold text-on-surface">1,104</p>
+<div class="mt-4 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-secondary w-1/2 h-full"></div>
+</div>
+</div>
+<!-- Stat Card: Total Questions -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-tertiary-fixed rounded-lg group-hover:bg-tertiary transition-colors">
+<span class="material-symbols-outlined text-tertiary group-hover:text-white">quiz</span>
+</div>
+<span class="text-success text-[12px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 24%
+                    </span>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Total Questions</h3>
+<p class="text-2xl font-bold text-on-surface">45,829</p>
+<div class="mt-4 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-tertiary-container w-5/6 h-full"></div>
+</div>
+</div>
+<!-- Stat Card: Active Exams -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-error-container rounded-lg group-hover:bg-error transition-colors">
+<span class="material-symbols-outlined text-error group-hover:text-white">emergency_share</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-error"></span>
+</span>
+<span class="text-error font-bold text-xs">Live</span>
+</div>
+</div>
+<h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Active Exams</h3>
+<p class="text-2xl font-bold text-on-surface">04</p>
+<div class="mt-4 flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-dim"></div>
+<div class="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-primary text-[8px] font-bold text-white">+12</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Recent Activity Table -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-sm flex flex-col">
+<div class="px-6 py-4 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent Activity</h2>
+<button class="text-primary hover:underline font-body-sm text-body-sm">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps uppercase">
+<tr>
+<th class="px-6 py-3">Reference</th>
+<th class="px-6 py-3">Activity Type</th>
+<th class="px-6 py-3">Timestamp</th>
+<th class="px-6 py-3">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">library_books</span>
+</div>
+<span class="font-title-sm text-on-surface">Adv. Mathematics II</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">New Question Added</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">10 mins ago</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-wider">Draft</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">person</span>
+</div>
+<span class="font-title-sm text-on-surface">Dr. Sarah Jenkins</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">Exam Session Completed</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">42 mins ago</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Verified</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">security</span>
+</div>
+<span class="font-title-sm text-on-surface">System Kernel</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">Integrity Report Generated</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">1.5 hours ago</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Public</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">history_edu</span>
+</div>
+<span class="font-title-sm text-on-surface">Data Structures Final</span>
+</div>
+</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">Question Bank Update</td>
+<td class="px-6 py-4 text-body-sm text-on-surface-variant">3 hours ago</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-wider">Draft</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Quick Actions & Info Panel -->
+<div class="space-y-gutter">
+<!-- Quick Actions Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm">
+<h3 class="font-title-sm text-title-sm mb-4">Quick Actions</h3>
+<div class="grid grid-cols-1 gap-3">
+<button class="flex items-center justify-center gap-3 w-full py-3 bg-primary text-on-primary rounded-lg font-title-sm text-body-md hover:bg-primary-container transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">add_box</span>
+                            Create New Exam
+                        </button>
+<button class="flex items-center justify-center gap-3 w-full py-3 border-2 border-primary text-primary rounded-lg font-title-sm text-body-md hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined">post_add</span>
+                            Add New Question
+                        </button>
+<button class="flex items-center justify-center gap-3 w-full py-3 bg-surface-container text-on-surface-variant rounded-lg font-title-sm text-body-md hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">analytics</span>
+                            Export Reports
+                        </button>
+</div>
+</div>
+<!-- Live Monitor Status -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm relative overflow-hidden">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-error">visibility</span>
+</div>
+<div>
+<h3 class="font-title-sm text-title-sm">Live Monitoring</h3>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Active proctors: 14</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant">Server Load</span>
+<span class="font-bold">42%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full">
+<div class="bg-primary w-[42%] h-full rounded-full"></div>
+</div>
+<div class="flex justify-between text-body-sm mt-2">
+<span class="text-on-surface-variant">Session Latency</span>
+<span class="font-bold text-green-600">14ms</span>
+</div>
+</div>
+<div class="mt-6">
+<img class="w-full h-24 object-cover rounded-lg" data-alt="A futuristic digital data visualization map showing global connectivity nodes. The style is minimalist with glowing lines of light blue and deep navy, representing data traffic between institutional nodes in a clean light-mode environment. No text or people, focusing purely on high-tech aesthetic data flow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFcmo1o4cUMOo5KiTlHDig2W3rKF8z2CtdFPiEMTSWdiHaxgulyTjoH8-qacR_NCrKv8ROnO78cfJOcKfRYEcPjNzaLK017Tw849RN5BpnrOVwvt-vyqc_qCHZbs1h_x_52GOtCThbXoPUWowVusiejxjJ4mYIhadgRPr8wn_mYMOESL6Za160SNsSi9QOgQ-E4o1XD6Z90LuVC4lGEw5Zizi6_N5GnLIoBlvoOn2tNAHT8IWsM7Wq971Fv57ROObGen3lihSRtI0"/>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for Global Support - suppressed based on context if not appropriate, but here added as helpful tool -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined">support_agent</span>
+</button>
+<script>
+        // Micro-interactions for Dashboard
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if (el.getAttribute('href') === '#') e.preventDefault();
+            });
+        });
+
+        // Dynamic greeting based on time of day
+        const welcomeText = document.querySelector('h2.font-display-lg');
+        const hour = new Date().getHours();
+        if (hour < 12) welcomeText.textContent = "Good Morning, Admin!";
+        else if (hour < 18) welcomeText.textContent = "Good Afternoon, Admin!";
+        else welcomeText.textContent = "Good Evening, Admin!";
+
+        // Simulated data refresh effect
+        setInterval(() => {
+            const stats = document.querySelectorAll('.text-2xl.font-bold');
+            stats.forEach(stat => {
+                stat.classList.add('animate-pulse');
+                setTimeout(() => stat.classList.remove('animate-pulse'), 1000);
+            });
+        }, 15000);
+    </script>
+</body></html>

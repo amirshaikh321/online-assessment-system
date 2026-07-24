@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add student</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <center>
+            <label>Name: </label>
+            <input type="text" name="name">
+            <br><br>
+            <label>Roll No: </label>
+            <input type="number" name="rollno">
+            <br><br>
+            <label>Email: </label>
+            <input type="email" name="email">
+            <br><br>
+            <label>Password: </label>
+            <input type="password" name="password">
+            <br><br>
+            <input type="submit" value="Add Student" formaction="{% url 'add_student' %}">
+            {{error_message}}
+        </center>
+    </form>
+</body>
+</html>
