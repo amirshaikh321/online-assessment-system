@@ -1,29 +1,297 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add student</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Student | Online Exam Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .fill-icon {
+        font-variation-settings: 'FILL' 1;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f7f9fb;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+</style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-secondary-container": "#54647a",
+                  "surface-container": "#eceef0",
+                  "on-error-container": "#93000a",
+                  "on-surface": "#191c1e",
+                  "primary": "#00288e",
+                  "on-primary-container": "#a8b8ff",
+                  "on-surface-variant": "#444653",
+                  "surface-bright": "#f7f9fb",
+                  "secondary": "#505f76",
+                  "on-tertiary-fixed-variant": "#004395",
+                  "inverse-primary": "#b8c4ff",
+                  "surface": "#f7f9fb",
+                  "primary-container": "#1e40af",
+                  "inverse-on-surface": "#eff1f3",
+                  "background": "#f7f9fb",
+                  "error-container": "#ffdad6",
+                  "tertiary-fixed": "#d8e2ff",
+                  "on-secondary-fixed-variant": "#38485d",
+                  "tertiary-fixed-dim": "#adc6ff",
+                  "outline": "#757684",
+                  "on-primary-fixed-variant": "#173bab",
+                  "on-primary": "#ffffff",
+                  "surface-container-high": "#e6e8ea",
+                  "outline-variant": "#c4c5d5",
+                  "on-error": "#ffffff",
+                  "on-background": "#191c1e",
+                  "inverse-surface": "#2d3133",
+                  "tertiary-container": "#00489e",
+                  "surface-dim": "#d8dadc",
+                  "tertiary": "#003272",
+                  "secondary-fixed": "#d3e4fe",
+                  "surface-tint": "#3755c3",
+                  "surface-container-highest": "#e0e3e5",
+                  "on-secondary": "#ffffff",
+                  "surface-container-low": "#f2f4f6",
+                  "primary-fixed-dim": "#b8c4ff",
+                  "on-tertiary-container": "#9cbbff",
+                  "primary-fixed": "#dde1ff",
+                  "on-tertiary": "#ffffff",
+                  "secondary-fixed-dim": "#b7c8e1",
+                  "surface-container-lowest": "#ffffff",
+                  "surface-variant": "#e0e3e5",
+                  "on-tertiary-fixed": "#001a42",
+                  "secondary-container": "#d0e1fb",
+                  "error": "#ba1a1a",
+                  "on-primary-fixed": "#001453",
+                  "on-secondary-fixed": "#0b1c30"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "container-max-width": "1440px",
+                  "sidebar-width": "260px",
+                  "stack-gap": "1rem",
+                  "gutter": "1.5rem",
+                  "margin-mobile": "1rem",
+                  "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+                  "body-sm": ["Inter"],
+                  "body-md": ["Inter"],
+                  "display-lg-mobile": ["Inter"],
+                  "label-caps": ["Inter"],
+                  "headline-md": ["Inter"],
+                  "title-sm": ["Inter"],
+                  "display-lg": ["Inter"]
+          },
+          "fontSize": {
+                  "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                  "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+                  "display-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "title-sm": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                  "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+</script>
 </head>
-<body>
-    <form method="post">
-        {% csrf_token %}
-        <center>
-            <label>Name: </label>
-            <input type="text" name="name">
-            <br><br>
-            <label>Roll No: </label>
-            <input type="number" name="rollno">
-            <br><br>
-            <label>Email: </label>
-            <input type="email" name="email">
-            <br><br>
-            <label>Password: </label>
-            <input type="password" name="password">
-            <br><br>
-            <input type="submit" value="Add Student" formaction="{% url 'add_student' %}">
-            {{error_message}}
-        </center>
-    </form>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 overflow-y-auto w-[260px] bg-surface-container-low border-r border-outline-variant shadow-sm z-40 transition-all duration-300 ease-in-out">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Admin Portal</h1>
+<p class="text-xs text-on-surface-variant/70 uppercase tracking-widest mt-1">Institutional Control</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="{% url 'admindashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="{% url 'add_question' %}">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Create Question</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="{% url 'show_questions' %}">
+<span class="material-symbols-outlined">visibility</span>
+<span>View Questions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">edit</span>
+<span>Update Question</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">delete</span>
+<span>Delete Question</span>
+</a>
+<!-- Add New Student (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container border-l-4 border-primary rounded-r-lg font-title-sm text-title-sm" href="{% url 'add_student' %}">
+<span class="material-symbols-outlined fill-icon">add_circle</span>
+<span>Add New Student</span>
+</a>
+</nav>
+<div class="px-6 py-6 border-t border-outline-variant">
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-title-sm text-title-sm shadow-md hover:bg-primary-container transition-all">
+                Create New Exam
+            </button>
+</div>
+<div class="p-4 border-t border-outline-variant mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-error">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-full lg:w-[calc(100%-260px)] z-30 bg-surface-bright/80 backdrop-blur-md shadow-sm h-16 px-gutter flex justify-between items-center transition-all duration-200">
+<div class="flex items-center gap-6">
+<div class="lg:hidden">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+</div>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant/30 focus-within:ring-2 ring-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-64 outline-none" placeholder="Search exams or students..." type="text"/>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Overview</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Reports</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="hover:bg-surface-container rounded-full p-2 cursor-pointer transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface-bright"></span>
+</div>
+<div class="flex items-center gap-3 pl-2 ml-2 border-l border-outline-variant/30">
+<div class="text-right hidden sm:block">
+<p class="text-on-surface font-semibold text-xs leading-none">Admin User</p>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-tighter">Super Admin</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 pb-12 lg:ml-[260px] min-h-screen px-gutter max-w-[1440px] flex justify-center">
+<div class="w-full max-w-xl">
+<!-- Page heading -->
+<div class="mb-6">
+<nav class="text-body-sm text-on-surface-variant mb-2 flex items-center gap-1">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Add New Student</span>
+</nav>
+<h2 class="font-display-lg-mobile text-display-lg-mobile font-extrabold tracking-tight text-on-surface">Add New Student</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">Create a student record and issue portal credentials.</p>
+</div>
+
+<!-- Form Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="px-6 py-4 border-b border-outline-variant/30 flex items-center gap-3">
+<div class="p-2.5 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">person_add</span>
+</div>
+<h3 class="font-title-sm text-title-sm text-on-surface">Student Details</h3>
+</div>
+
+<form action="{% url 'add_student' %}" method="post" class="px-6 py-6 space-y-5">
+{% csrf_token %}
+
+{% if error_message %}
+<div class="flex items-start gap-3 px-4 py-3 rounded-lg bg-error-container text-on-error-container border border-error/20">
+<span class="material-symbols-outlined text-[18px] mt-0.5">error</span>
+<p class="text-body-sm font-body-sm">{{ error_message }}</p>
+</div>
+{% endif %}
+
+<div>
+<label for="id_name" class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Full Name</label>
+<div class="flex items-center gap-2 bg-surface-container-low border border-outline-variant/40 rounded-lg px-4 focus-within:ring-2 ring-primary/20 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">badge</span>
+<input type="text" name="name" placeholder="e.g. Sarah Jenkins" required
+class="w-full bg-transparent border-none focus:ring-0 py-3 text-body-md font-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50"/>
+</div>
+</div>
+
+<div>
+<label for="id_rollno" class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Roll No.</label>
+<div class="flex items-center gap-2 bg-surface-container-low border border-outline-variant/40 rounded-lg px-4 focus-within:ring-2 ring-primary/20 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">tag</span>
+<input type="number" name="rollno" placeholder="e.g. 24081" required
+class="w-full bg-transparent border-none focus:ring-0 py-3 text-body-md font-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50"/>
+</div>
+</div>
+
+<div>
+<label for="id_email" class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Email Address</label>
+<div class="flex items-center gap-2 bg-surface-container-low border border-outline-variant/40 rounded-lg px-4 focus-within:ring-2 ring-primary/20 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">mail</span>
+<input type="email" name="email" placeholder="student@institution.edu" required
+class="w-full bg-transparent border-none focus:ring-0 py-3 text-body-md font-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50"/>
+</div>
+</div>
+
+<div>
+<label for="id_password" class="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2">Password</label>
+<div class="flex items-center gap-2 bg-surface-container-low border border-outline-variant/40 rounded-lg px-4 focus-within:ring-2 ring-primary/20 focus-within:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">lock</span>
+<input type="password" name="password" placeholder="Set a temporary password" required
+class="w-full bg-transparent border-none focus:ring-0 py-3 text-body-md font-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50"/>
+</div>
+<p class="text-body-sm text-on-surface-variant/70 mt-1.5">The student can change this after their first login.</p>
+</div>
+
+<div class="pt-2 flex items-center gap-3">
+<button type="submit"
+class="flex-1 flex items-center justify-center gap-2 py-3 bg-primary text-on-primary rounded-lg font-title-sm text-body-md shadow-md hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[20px]">add_box</span>
+                    Add Student
+                </button>
+<a href="#"
+class="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-outline-variant text-on-surface-variant rounded-lg font-title-sm text-body-md hover:bg-surface-container-high transition-all">
+                    Cancel
+                </a>
+</div>
+
+{% if success_message %}
+<div class="flex items-start gap-3 px-4 py-3 rounded-lg bg-success-container text-on-success-container border border-success/20">
+<span class="material-symbols-outlined text-[18px] mt-0.5">check_circle</span>
+<p class="text-body-sm font-body-sm">{{ success_message }}</p>
+</div>
+{% endif %}
+</form>
+</div>
+</div>
+</main>
 </body>
 </html>
