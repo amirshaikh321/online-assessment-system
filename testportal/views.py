@@ -27,23 +27,6 @@ def add_question(request):
         form = QuestionForm()
     return render(request, 'questions/createquestion.html', {'form': form})
 
-# def login(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-
-#         try:
-#             student = student.objects.get(email=email, password=password)
-#             return redirect('stddashboard')  # Redirect to student dashboard
-#         except student.DoesNotExist:
-#             try:
-#                 admin = Admin.objects.get(email=email, password=password)
-#                 return redirect('admindashboard')  # Redirect to admin dashboard
-#             except Admin.DoesNotExist:
-#                 error_message = "Invalid email or password."
-#                 return render(request, 'login.html', {'error_message': error_message})
-
-#     return render(request, 'login.html')
 
 def login(request):
     if request.method == 'POST':
@@ -74,6 +57,6 @@ def add_student(request):
 
         student_obj = student(name=name, rollno=rollno, email=email, password=password)
         student_obj.save()
-        return render(request, 'admin/add_student.html')  # Redirect to student dashboard after successful registration
+        return render(request, 'admin/add_student.html', {'success_message': "Student added successfully."})  # Redirect to student dashboard after successful registration
 
     return render(request, 'admin/add_student.html')
