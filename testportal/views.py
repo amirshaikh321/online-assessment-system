@@ -35,7 +35,9 @@ def login(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             if student.objects.filter(email=email, password=password).exists():
-                return render(request,'student/stddash.html')  # Redirect to student dashboard
+                name = student.objects.get(email=email).name  # Store the student's name in the session
+                request.session['student_name'] = name  # Store the student's name in the session
+                return render(request,'student/stddash.html', {'student_name': name})  # Redirect to student dashboard
             return render(request, 'login.html', {'error_message': "Invalid email or password."})
         elif role == 'admin':
             email = request.POST.get('email')
@@ -60,3 +62,8 @@ def add_student(request):
         return render(request, 'admin/add_student.html', {'success_message': "Student added successfully."})  # Redirect to student dashboard after successful registration
 
     return render(request, 'admin/add_student.html')
+
+def logout(request):
+    # Clear the session data
+    request.session.flush()
+    return redirect('login')  # Redirect to the login page after logout
