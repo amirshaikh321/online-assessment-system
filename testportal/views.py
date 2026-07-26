@@ -43,7 +43,9 @@ def login(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             if Admin.objects.filter(email=email, password=password).exists():
-                return render(request,'admin/admindash.html')  # Redirect to admin dashboard
+                name = Admin.objects.get(email = email).name
+                request.session['admin_name'] = name  # Store the admin's name in the session
+                return render(request,'admin/admindash.html', {'admin_name': name})  # Redirect to admin dashboard
             return render(request, 'login.html', {'error_message': "Invalid email or password."})
     return render(request, 'login.html')
 
