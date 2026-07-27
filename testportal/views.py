@@ -69,3 +69,6 @@ def logout(request):
     # Clear the session data
     request.session.flush()
     return redirect('login')  # Redirect to the login page after logout
+
+def testportal(request):
+    return render(request, 'student/test.html')
