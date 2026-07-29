@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Exam Results | Online Exam Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-container": "#1e40af",
+                        "surface-bright": "#f7f9fb",
+                        "secondary": "#505f76",
+                        "outline": "#757684",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1e",
+                        "error": "#ba1a1a",
+                        "primary": "#00288e",
+                        "surface-container": "#eceef0",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#444653",
+                        "background": "#f7f9fb",
+                        "outline-variant": "#c4c5d5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "stack-gap": "1rem",
+                        "margin-mobile": "1rem",
+                        "margin-desktop": "2rem",
+                        "container-max-width": "1440px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "title-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f7f9fb;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+    <!-- Top Bar Navigation -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-surface-bright/90 backdrop-blur-md z-50 border-b border-outline-variant flex items-center px-gutter justify-between">
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-primary text-2xl" data-icon="school">school</span>
+            <h1 class="font-headline-md text-headline-md text-primary font-extrabold tracking-tight">Assessment Results</h1>
+        </div>
+        <div>
+            <a href="{% url 'stddashboard' %}" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-sm text-title-sm hover:bg-primary-container transition-all shadow-sm active:scale-95 flex items-center gap-2">
+                <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-12 px-gutter max-w-[800px] mx-auto min-h-screen">
+        <!-- Results Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant shadow-sm mb-8">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-secondary-container text-primary mb-4">
+                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                </div>
+                <h2 class="font-display-lg text-display-lg text-primary font-extrabold mb-2">Congratulations, {{ student_name }}!</h2>
+                <p class="text-on-surface-variant font-body-md">You have completed your assessment. Below is your detailed performance report.</p>
+            </div>
+
+            <!-- Score Banner -->
+            <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant grid grid-cols-2 gap-4 text-center mb-8">
+                <div class="border-r border-outline-variant">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Total Score</p>
+                    <p class="text-4xl font-extrabold text-primary">{{ score }} <span class="text-xl font-normal text-on-surface-variant">/ {{ total_questions }}</span></p>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">Accuracy</p>
+                    <p class="text-4xl font-extrabold text-primary" id="accuracy-value">0%</p>
+                </div>
+            </div>
+
+            <!-- Detailed Question Breakdown -->
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Detailed Breakdown</h3>
+            <div class="space-y-4">
+                {% for result in results %}
+                <div class="p-5 rounded-xl border {% if result.is_correct %}border-green-200 bg-green-50/30{% else %}border-red-200 bg-red-50/30{% endif %}">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center {% if result.is_correct %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {% if result.is_correct %}
+                            <span class="material-symbols-outlined text-sm font-bold" data-icon="done">done</span>
+                            {% else %}
+                            <span class="material-symbols-outlined text-sm font-bold" data-icon="close">close</span>
+                            {% endif %}
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-title-sm text-title-sm text-on-surface mb-2">Question {{ forloop.counter }}: {{ result.question }}</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-body-sm mt-3">
+                                <div>
+                                    <span class="text-on-surface-variant font-semibold">Your Answer:</span> 
+                                    <span class="{% if result.is_correct %}text-green-700 font-medium{% else %}text-red-700 font-medium{% endif %}">
+                                        {% if result.user_answer %}{{ result.user_answer }}{% else %}<span class="italic text-on-surface-variant">Unanswered</span>{% endif %}
+                                    </span>
+                                </div>
+                                {% if not result.is_correct %}
+                                <div>
+                                    <span class="text-on-surface-variant font-semibold">Correct Answer:</span>
+                                    <span class="text-green-700 font-medium">{{ result.correct_answer }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex justify-center gap-4 mt-8">
+                <a href="{% url 'stddashboard' %}" class="bg-primary text-on-primary px-8 py-3 rounded-lg font-title-sm hover:bg-primary-container transition-all shadow-sm flex items-center gap-2">
+                    <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                    Return to Dashboard
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Atmosphere Elements -->
+    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+        <div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-5%] left-[-5%] w-[30%] h-[30%] bg-tertiary/5 blur-[100px] rounded-full"></div>
+    </div>
+
+    <script>
+        // Accuracy calculation
+        const score = parseInt("{{ score }}");
+        const total = parseInt("{{ total_questions }}");
+        if (total > 0) {
+            const accuracy = Math.round((score / total) * 100);
+            document.getElementById('accuracy-value').textContent = accuracy + "%";
+        }
+    </script>
+</body>
+</html>
