@@ -129,6 +129,23 @@
     </style>
 </head>
 <body class="text-on-surface">
+{% if error_message %}
+<!-- Top Bar Navigation -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-surface-bright/90 backdrop-blur-md z-50 border-b border-outline-variant flex items-center px-gutter justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="school">school</span>
+<h1 class="font-headline-md text-headline-md text-primary font-extrabold tracking-tight">Online Exam Portal</h1>
+</div>
+</header>
+<main class="pt-24 pb-12 px-gutter max-w-[600px] mx-auto min-h-screen flex items-center justify-center">
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant shadow-sm text-center">
+<span class="material-symbols-outlined text-error text-5xl mb-4" data-icon="warning">warning</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">No Questions Available</h2>
+<p class="text-on-surface-variant font-body-md mb-6">{{ error_message }}</p>
+<a href="{% url 'stddashboard' %}" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-sm text-title-sm hover:bg-primary-container transition-all">Go to Dashboard</a>
+</div>
+</main>
+{% else %}
 <!-- Top Bar Navigation -->
 <header class="fixed top-0 left-0 right-0 h-16 bg-surface-bright/90 backdrop-blur-md z-50 border-b border-outline-variant flex items-center px-gutter justify-between">
 <div class="flex items-center gap-4">
@@ -141,64 +158,61 @@
 <span class="material-symbols-outlined" data-icon="timer">timer</span>
 <span class="tabular-nums" id="exam-timer">01:24:15 remaining</span>
 </div>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-sm text-title-sm hover:bg-primary-container transition-all shadow-sm active:scale-95">
+<button type="button" onclick="submitForm('submit')" class="bg-primary text-on-primary px-6 py-2 rounded-lg font-title-sm text-title-sm hover:bg-primary-container transition-all shadow-sm active:scale-95">
                 Submit Exam
             </button>
 </div>
 </header>
-<main class="pt-24 pb-12 px-gutter max-w-[1440px] mx-auto grid grid-cols-12 gap-8 h-screen overflow-hidden">
+<form method="POST" id="question-form" action="{% url 'testportal' %}" class="pt-24 pb-12 px-gutter max-w-[1440px] mx-auto grid grid-cols-12 gap-8 h-screen overflow-hidden">
+    {% csrf_token %}
+    <input type="hidden" name="question_id" value="{{ current_question.id }}">
+    <input type="hidden" name="selected_option" id="selected-option-input" value="{{ current_answer }}">
+    <input type="hidden" name="action" id="action-input" value="next">
+    <input type="hidden" name="target_index" id="target-index-input" value="">
+
 <!-- Main Content Area: Question Display -->
 <section class="col-span-12 lg:col-span-8 flex flex-col h-full overflow-y-auto pr-4 scroll-smooth">
 <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant shadow-sm mb-6">
 <div class="flex justify-between items-center mb-6">
-<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Question 14 of 50</span>
-<button class="flex items-center gap-2 text-primary hover:bg-secondary-container/30 px-3 py-1 rounded-full transition-colors" id="mark-review">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Question {{ question_number }} of {{ total_questions }}</span>
+<button type="button" class="flex items-center gap-2 text-primary hover:bg-secondary-container/30 px-3 py-1 rounded-full transition-colors" id="mark-review">
 <span class="material-symbols-outlined" data-icon="flag">flag</span>
 <span class="font-title-sm text-title-sm">Mark for Review</span>
 </button>
 </div>
 <div class="mb-10 no-select">
 <h2 class="font-headline-md text-headline-md text-on-surface leading-relaxed">
-                        In a closed economy with sticky prices, what is the immediate effect of an unexpected increase in the nominal money supply on the real interest rate according to the IS-LM model?
+                        {{ current_question.question_text }}
                     </h2>
 </div>
 <div class="space-y-4">
-<!-- Option A -->
-<div class="option-card flex items-center gap-4 p-5 rounded-xl border border-outline-variant cursor-pointer group" onclick="selectOption(this)">
-<div class="w-10 h-10 rounded-full border-2 border-outline-variant flex items-center justify-center font-bold text-on-surface-variant group-hover:border-primary transition-colors">A</div>
-<p class="font-body-md text-body-md flex-1">The real interest rate increases due to higher inflation expectations.</p>
-<span class="material-symbols-outlined opacity-0 transition-opacity text-primary" data-icon="check_circle">check_circle</span>
-</div>
-<!-- Option B -->
-<div class="option-card flex items-center gap-4 p-5 rounded-xl border border-outline-variant cursor-pointer group selected" onclick="selectOption(this)">
-<div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center font-bold text-primary bg-secondary-container">B</div>
-<p class="font-body-md text-body-md flex-1">The real interest rate decreases as the LM curve shifts rightward along the downward-sloping IS curve.</p>
-<span class="material-symbols-outlined opacity-100 text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<!-- Option C -->
-<div class="option-card flex items-center gap-4 p-5 rounded-xl border border-outline-variant cursor-pointer group" onclick="selectOption(this)">
-<div class="w-10 h-10 rounded-full border-2 border-outline-variant flex items-center justify-center font-bold text-on-surface-variant group-hover:border-primary transition-colors">C</div>
-<p class="font-body-md text-body-md flex-1">The real interest rate remains unchanged as prices are completely rigid in the short run.</p>
-<span class="material-symbols-outlined opacity-0 transition-opacity text-primary" data-icon="check_circle">check_circle</span>
-</div>
-<!-- Option D -->
-<div class="option-card flex items-center gap-4 p-5 rounded-xl border border-outline-variant cursor-pointer group" onclick="selectOption(this)">
-<div class="w-10 h-10 rounded-full border-2 border-outline-variant flex items-center justify-center font-bold text-on-surface-variant group-hover:border-primary transition-colors">D</div>
-<p class="font-body-md text-body-md flex-1">The effect is ambiguous and depends on the slope of the Phillips curve.</p>
-<span class="material-symbols-outlined opacity-0 transition-opacity text-primary" data-icon="check_circle">check_circle</span>
-</div>
+    {% for opt in options %}
+    {% if opt %}
+    <div class="option-card flex items-center gap-4 p-5 rounded-xl border {% if current_answer == opt %}border-primary bg-secondary-container selected{% else %}border-outline-variant{% endif %} cursor-pointer group" onclick="selectOption(this, '{{ opt|escapejs }}')">
+        <div class="w-10 h-10 rounded-full border-2 {% if current_answer == opt %}border-primary text-primary bg-secondary-container{% else %}border-outline-variant text-on-surface-variant{% endif %} flex items-center justify-center font-bold group-hover:border-primary transition-colors">
+            {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% endif %}
+        </div>
+        <p class="font-body-md text-body-md flex-1">{{ opt }}</p>
+        <span class="material-symbols-outlined {% if current_answer == opt %}opacity-100{% else %}opacity-0{% endif %} transition-opacity text-primary" data-icon="check_circle" {% if current_answer == opt %}style="font-variation-settings: 'FILL' 1;"{% endif %}>check_circle</span>
+    </div>
+    {% endif %}
+    {% endfor %}
 </div>
 </div>
 <!-- Question Navigation Bottom -->
 <div class="flex items-center justify-between mt-auto py-6">
-<button class="flex items-center gap-2 font-title-sm text-title-sm text-on-surface-variant hover:text-primary transition-colors">
+<button type="button" onclick="submitForm('prev')" class="flex items-center gap-2 font-title-sm text-title-sm text-on-surface-variant hover:text-primary transition-colors" {% if current_index == 0 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
 <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
                     Previous Question
                 </button>
 <div class="flex items-center gap-4">
-<button class="px-6 py-2 rounded-lg border border-outline text-on-surface font-title-sm text-title-sm hover:bg-surface-container transition-colors">Clear Selection</button>
-<button class="px-8 py-2 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm hover:bg-primary-container transition-all flex items-center gap-2">
+<button type="button" onclick="clearSelection()" class="px-6 py-2 rounded-lg border border-outline text-on-surface font-title-sm text-title-sm hover:bg-surface-container transition-colors">Clear Selection</button>
+<button type="button" onclick="submitForm('next')" class="px-8 py-2 rounded-lg bg-primary text-on-primary font-title-sm text-title-sm hover:bg-primary-container transition-all flex items-center gap-2">
+                        {% if current_index == total_questions|add:"-1" %}
+                        Finish Exam
+                        {% else %}
                         Next Question
+                        {% endif %}
                         <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
 </button>
 </div>
@@ -209,35 +223,14 @@
 <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant shadow-sm h-full flex flex-col">
 <h3 class="font-title-sm text-title-sm mb-4 text-on-surface flex items-center justify-between">
 <span>Question Navigator</span>
-<span class="text-xs bg-surface-container-high px-2 py-1 rounded text-on-surface-variant">42% Complete</span>
+<span class="text-xs bg-surface-container-high px-2 py-1 rounded text-on-surface-variant">{{ percent_complete }}% Complete</span>
 </h3>
 <div class="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-5 gap-3 overflow-y-auto pr-2 custom-scrollbar">
-<!-- Question Grid Items -->
-<!-- Pattern: Answered (Green/Tonal), Unanswered (Gray), Active (Blue), Flagged (Icon) -->
-<script>
-                        const gridContainer = document.currentScript.parentElement;
-                        const statuses = ['answered', 'answered', 'answered', 'unanswered', 'flagged', 'answered', 'answered', 'unanswered', 'unanswered', 'answered', 'answered', 'answered', 'answered', 'current'];
-                        for (let i = 1; i <= 50; i++) {
-                            let statusClass = 'bg-surface-container-highest text-on-surface-variant';
-                            let icon = '';
-                            
-                            if (i < 14) {
-                                if (i === 5) {
-                                    statusClass = 'bg-tertiary text-on-tertiary flex flex-col';
-                                    icon = '<span class="material-symbols-outlined text-[12px] leading-none" data-icon="flag" style="font-variation-settings: \'FILL\' 1">flag</span>';
-                                } else {
-                                    statusClass = 'bg-secondary-fixed text-on-secondary-fixed';
-                                }
-                            } else if (i === 14) {
-                                statusClass = 'ring-2 ring-primary ring-offset-2 bg-primary text-on-primary scale-110 z-10';
-                            }
-
-                            const btn = document.createElement('button');
-                            btn.className = `w-full aspect-square rounded-lg flex flex-col items-center justify-center font-bold text-sm transition-all hover:brightness-95 ${statusClass}`;
-                            btn.innerHTML = `<span>${i}</span>${icon}`;
-                            gridContainer.appendChild(btn);
-                        }
-                    </script>
+    {% for nq in navigator_questions %}
+    <button type="button" onclick="navigateToQuestion({{ nq.index }})" class="w-full aspect-square rounded-lg flex flex-col items-center justify-center font-bold text-sm transition-all hover:brightness-95 {% if nq.is_current %}ring-2 ring-primary ring-offset-2 bg-primary text-on-primary scale-110 z-10{% elif nq.answered %}bg-secondary-fixed text-on-secondary-fixed{% else %}bg-surface-container-highest text-on-surface-variant{% endif %}">
+        <span>{{ nq.number }}</span>
+    </button>
+    {% endfor %}
 </div>
 <!-- Legend -->
 <div class="mt-auto pt-6 border-t border-outline-variant grid grid-cols-2 gap-y-3">
@@ -270,7 +263,7 @@
 <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
 </div>
 <div>
-<p class="font-title-sm text-title-sm text-on-surface">Elena Rodriguez</p>
+<p class="font-title-sm text-title-sm text-on-surface">{{ student_name }}</p>
 <p class="font-body-sm text-body-sm text-on-surface-variant">Session ID: 882-AFK-49</p>
 </div>
 <div class="ml-auto">
@@ -278,21 +271,21 @@
 </div>
 </div>
 </aside>
-</main>
+</form>
+{% endif %}
 <!-- Floating Atmosphere Elements (Subtle Interaction) -->
 <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
 <div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full"></div>
 <div class="absolute bottom-[-5%] left-[-5%] w-[30%] h-[30%] bg-tertiary/5 blur-[100px] rounded-full"></div>
 </div>
 <script>
-        function selectOption(element) {
+        function selectOption(element, val) {
             // Remove selection from all options
             const options = document.querySelectorAll('.option-card');
             options.forEach(opt => {
                 opt.classList.remove('selected');
                 const badge = opt.querySelector('div');
-                badge.classList.remove('border-primary', 'text-primary', 'bg-secondary-container');
-                badge.classList.add('border-outline-variant', 'text-on-surface-variant');
+                badge.className = "w-10 h-10 rounded-full border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-bold group-hover:border-primary transition-colors";
                 const icon = opt.querySelector('.material-symbols-outlined');
                 icon.classList.remove('opacity-100');
                 icon.classList.add('opacity-0');
@@ -302,12 +295,41 @@
             // Add selection to clicked option
             element.classList.add('selected');
             const activeBadge = element.querySelector('div');
-            activeBadge.classList.remove('border-outline-variant', 'text-on-surface-variant');
-            activeBadge.classList.add('border-primary', 'text-primary', 'bg-secondary-container');
+            activeBadge.className = "w-10 h-10 rounded-full border-2 border-primary text-primary bg-secondary-container flex items-center justify-center font-bold group-hover:border-primary transition-colors";
             const activeIcon = element.querySelector('.material-symbols-outlined');
             activeIcon.classList.remove('opacity-0');
             activeIcon.classList.add('opacity-100');
             activeIcon.style.fontVariationSettings = "'FILL' 1";
+
+            // Set hidden input value
+            document.getElementById('selected-option-input').value = val;
+        }
+
+        function submitForm(action, targetIndex) {
+            document.getElementById('action-input').value = action;
+            if (targetIndex !== undefined) {
+                document.getElementById('target-index-input').value = targetIndex;
+            }
+            document.getElementById('question-form').submit();
+        }
+
+        function navigateToQuestion(index) {
+            submitForm('navigate', index);
+        }
+
+        function clearSelection() {
+            const options = document.querySelectorAll('.option-card');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                const badge = opt.querySelector('div');
+                badge.className = "w-10 h-10 rounded-full border-2 border-outline-variant text-on-surface-variant flex items-center justify-center font-bold group-hover:border-primary transition-colors";
+                const icon = opt.querySelector('.material-symbols-outlined');
+                icon.classList.remove('opacity-100');
+                icon.classList.add('opacity-0');
+                icon.style.fontVariationSettings = "'FILL' 0";
+            });
+            document.getElementById('selected-option-input').value = "";
+            submitForm('clear');
         }
 
         // Countdown Timer Logic
@@ -315,6 +337,7 @@
         const timerDisplay = document.getElementById('exam-timer');
         
         function updateTimer() {
+            if (!timerDisplay) return;
             const hours = Math.floor(timeLeft / 3600);
             const minutes = Math.floor((timeLeft % 3600) / 60);
             const seconds = timeLeft % 60;
@@ -326,6 +349,7 @@
             } else {
                 clearInterval(timerInterval);
                 alert("Exam time has expired. Submitting your answers automatically.");
+                submitForm('submit');
             }
         }
         
@@ -333,11 +357,13 @@
 
         // Mark for Review toggle
         const flagBtn = document.getElementById('mark-review');
-        flagBtn.addEventListener('click', () => {
-            const icon = flagBtn.querySelector('.material-symbols-outlined');
-            const isFilled = icon.style.fontVariationSettings.includes("'FILL' 1");
-            icon.style.fontVariationSettings = isFilled ? "'FILL' 0" : "'FILL' 1";
-            flagBtn.classList.toggle('text-tertiary');
-        });
+        if (flagBtn) {
+            flagBtn.addEventListener('click', () => {
+                const icon = flagBtn.querySelector('.material-symbols-outlined');
+                const isFilled = icon.style.fontVariationSettings.includes("'FILL' 1");
+                icon.style.fontVariationSettings = isFilled ? "'FILL' 0" : "'FILL' 1";
+                flagBtn.classList.toggle('text-tertiary');
+            });
+        }
     </script>
 </body></html>
