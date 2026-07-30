@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
 from testportal.models import Question, student, Admin
 from .forms import QuestionForm
 
@@ -8,10 +8,22 @@ def home(request):
     return render(request,'login.html')
 
 def stddashboard(request):
-    return render(request,'student/stddash.html')
+    student_name = request.session.get('student_name')
+    if not student_name:
+        return redirect('login')
+    return render(request, 'student/stddash.html', {'student_name': student_name})
 
 def admindashboard(request):
-    return render(request,'admin/admindash.html')
+    admin_name = request.session.get('admin_name')
+    if not admin_name:
+        return redirect('login')
+    total_students = student.objects.count()
+    total_questions = Question.objects.count()
+    return render(request, 'admin/admindash.html', {
+        'admin_name': admin_name,
+        'total_students': total_students,
+        'total_questions': total_questions,
+    })
 
 def show_questions(request):
     questions = Question.objects.all()
@@ -37,7 +49,7 @@ def login(request):
             if student.objects.filter(email=email, password=password).exists():
                 name = student.objects.get(email=email).name  # Store the student's name in the session
                 request.session['student_name'] = name  # Store the student's name in the session
-                return render(request,'student/stddash.html', {'student_name': name})  # Redirect to student dashboard
+                return redirect('stddashboard')  # Redirect to student dashboard
             return render(request, 'login.html', {'error_message': "Invalid email or password."})
         elif role == 'admin':
             email = request.POST.get('email')
@@ -45,7 +57,7 @@ def login(request):
             if Admin.objects.filter(email=email, password=password).exists():
                 name = Admin.objects.get(email = email).name
                 request.session['admin_name'] = name  # Store the admin's name in the session
-                return render(request,'admin/admindash.html', {'admin_name': name})  # Redirect to admin dashboard
+                return redirect('admindashboard')  # Redirect to admin dashboard
             return render(request, 'login.html', {'error_message': "Invalid email or password."})
     return render(request, 'login.html')
 
