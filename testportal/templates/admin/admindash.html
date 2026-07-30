@@ -215,18 +215,6 @@
 <h2 class="font-display-lg text-display-lg font-extrabold tracking-tight">Welcome back, {{admin_name}}!</h2>
 <p class="text-on-primary-container/80 font-body-md text-body-md max-w-md">The examination portal is running smoothly. There are 4 active exams being monitored in real-time across institutional campuses.</p>
 </div>
-<div class="absolute right-10 top-1/2 -translate-y-1/2 hidden md:block">
-<div class="flex gap-4">
-<div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 text-center">
-<p class="text-3xl font-bold">98%</p>
-<p class="text-[10px] uppercase font-bold tracking-widest">Uptime</p>
-</div>
-<div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 text-center">
-<p class="text-3xl font-bold">12.4k</p>
-<p class="text-[10px] uppercase font-bold tracking-widest">Requests</p>
-</div>
-</div>
-</div>
 </section>
 <!-- Bento Grid for Statistics -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
@@ -241,7 +229,7 @@
                     </span>
 </div>
 <h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Total Students</h3>
-<p class="text-2xl font-bold text-on-surface">14,230</p>
+<p class="text-2xl font-bold text-on-surface">{{ total_students }}</p>
 <div class="mt-4 h-1 bg-surface-container rounded-full overflow-hidden">
 <div class="bg-primary w-3/4 h-full"></div>
 </div>
@@ -273,7 +261,7 @@
                     </span>
 </div>
 <h3 class="text-on-surface-variant font-label-caps text-label-caps mb-1 uppercase">Total Questions</h3>
-<p class="text-2xl font-bold text-on-surface">45,829</p>
+<p class="text-2xl font-bold text-on-surface">{{ total_questions }}</p>
 <div class="mt-4 h-1 bg-surface-container rounded-full overflow-hidden">
 <div class="bg-tertiary-container w-5/6 h-full"></div>
 </div>
@@ -404,41 +392,9 @@
                         </button>
 </div>
 </div>
-<!-- Live Monitor Status -->
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm relative overflow-hidden">
-<div class="flex items-center gap-3 mb-4">
-<div class="w-10 h-10 rounded-full bg-error-container/20 flex items-center justify-center">
-<span class="material-symbols-outlined text-error">visibility</span>
-</div>
-<div>
-<h3 class="font-title-sm text-title-sm">Live Monitoring</h3>
-<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Active proctors: 14</p>
-</div>
-</div>
-<div class="space-y-3">
-<div class="flex justify-between text-body-sm">
-<span class="text-on-surface-variant">Server Load</span>
-<span class="font-bold">42%</span>
-</div>
-<div class="w-full bg-surface-container h-1.5 rounded-full">
-<div class="bg-primary w-[42%] h-full rounded-full"></div>
-</div>
-<div class="flex justify-between text-body-sm mt-2">
-<span class="text-on-surface-variant">Session Latency</span>
-<span class="font-bold text-green-600">14ms</span>
-</div>
-</div>
-<div class="mt-6">
-<img class="w-full h-24 object-cover rounded-lg" data-alt="A futuristic digital data visualization map showing global connectivity nodes. The style is minimalist with glowing lines of light blue and deep navy, representing data traffic between institutional nodes in a clean light-mode environment. No text or people, focusing purely on high-tech aesthetic data flow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFcmo1o4cUMOo5KiTlHDig2W3rKF8z2CtdFPiEMTSWdiHaxgulyTjoH8-qacR_NCrKv8ROnO78cfJOcKfRYEcPjNzaLK017Tw849RN5BpnrOVwvt-vyqc_qCHZbs1h_x_52GOtCThbXoPUWowVusiejxjJ4mYIhadgRPr8wn_mYMOESL6Za160SNsSi9QOgQ-E4o1XD6Z90LuVC4lGEw5Zizi6_N5GnLIoBlvoOn2tNAHT8IWsM7Wq971Fv57ROObGen3lihSRtI0"/>
-</div>
-</div>
 </div>
 </div>
 </main>
-<!-- FAB for Global Support - suppressed based on context if not appropriate, but here added as helpful tool -->
-<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
-<span class="material-symbols-outlined">support_agent</span>
-</button>
 <script>
         // Micro-interactions for Dashboard
         document.querySelectorAll('a, button').forEach(el => {
@@ -450,9 +406,10 @@
         // Dynamic greeting based on time of day
         const welcomeText = document.querySelector('h2.font-display-lg');
         const hour = new Date().getHours();
-        if (hour < 12) welcomeText.textContent = "Good Morning, Admin!";
-        else if (hour < 18) welcomeText.textContent = "Good Afternoon, Admin!";
-        else welcomeText.textContent = "Good Evening, Admin!";
+        const adminName = "{{ admin_name|escapejs }}";
+        if (hour < 12) welcomeText.textContent = "Good Morning, " + adminName + "!";
+        else if (hour < 18) welcomeText.textContent = "Good Afternoon, " + adminName + "!";
+        else welcomeText.textContent = "Good Evening, " + adminName + "!";
 
         // Simulated data refresh effect
         setInterval(() => {
